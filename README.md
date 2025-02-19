@@ -64,8 +64,15 @@ git rm filename  # Delete a file and stage the deletion
 git reset --hard <commit-hash>  # Reset to a specific commit and discard all changes
 
 
-You will probably use "git pull origin main" and "git push origin main" most frequently.
 
+You will probably use these the most:
+    - git pull origin main
+    - git push origin main
+    - git add . 
+    - git commit -m "msg"
 
-git add .  # Stage all modified and new files
-git commit -m "Your commit message"  # Commit staged changes
+Example:
+    - I made a change to raw_data_Hist.py
+    1. git add . # Stage all modified and new files
+    2. git commit -m "Add some msg here"
+    3. git push origin main #This should upload to the github repo successfully
