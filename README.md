@@ -64,7 +64,6 @@ git rm filename  # Delete a file and stage the deletion
 git reset --hard <commit-hash>  # Reset to a specific commit and discard all changes
 
 
-
 You will probably use these the most:
     - git pull origin main
     - git push origin main
@@ -76,3 +75,10 @@ Example:
     1. git add . # Stage all modified and new files
     2. git commit -m "Add some msg here"
     3. git push origin main #This should upload to the github repo successfully
+
+
+
+TODO List:
+[] Refine the splicing method
+[] Create a universal data structure like a dict, or list of all the words, or columns
+[] Add sentiment feeling for 5 and 6 

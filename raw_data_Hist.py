@@ -179,14 +179,17 @@ def getSentimentOfB(data):
 
 
 def getUserInput(): 
-    numOfFuncs = 4
+    numOfFuncs = 6
     print("Welcome to the data anaysis of Comparting Comparative Sentences")
     print("To begin, here is a list of commands we can do to vizulize the data: ")
     print("1. Get the frequency of all unique words from the SENTENCES column")
     print("2. Get the frequency of all unique words from the OBJECT_A and OBJECT_B column")
     print("3. Get the sentiment of A in comparasion to B (Top n Positive and Negative)")
     print("4. Get the sentiment of B in comparasion to A (Top n Positive and Negative)")
-    print("Q. To exit the program")
+    print("-----------------------------------------------------------")
+    print("5. Search common words by domain")
+    print("6. Get frequency of unique words found in SENTENCES column (Removing stop words and OBJECT_A/OBJECT_B)")
+    print("Q. To exit the program\n")
     # <------------- Below These functions are not yet done -------------> #
     # print("5. Create a vizulization of all the data") #Using streamLit, we will create a webpage of some kind to vizuluze the data
     while True:
@@ -208,6 +211,42 @@ def getUserInput():
                     print(f"Invalid number! Please enter a number greater than 0 and less than or equal to {numOfFuncs}.")
         except ValueError:
             print("Invalid input! Please enter a valid integer.")
+
+def searchDomain(data, n=15):
+    domain_groups = data.groupby('domain')['sentence'].apply(lambda x: ' '.join(x)).reset_index()
+    domain_groups['words'] = domain_groups['sentence'].apply(lambda x: x.split())
+    
+    domain_word_counts = {}
+    for _, row in domain_groups.iterrows():
+        domain = row['domain']
+        words = [word.lower() for word in row['words'] if word.lower() not in stop_words]
+        domain_word_counts[domain] = Counter(words)
+    
+    for domain, counter in domain_word_counts.items():
+        print(f"Most common words in domain {domain}:")
+        print(pd.DataFrame(counter.most_common(n), columns=['Word', 'Frequency']).to_string(index=False))
+        print("---------------------------------------------------")
+
+def getUniqueWordsExcludingStopWordsAndObjects(data, n=20):
+    sentences = data['sentence'].astype(str)
+    object_a_words = set(data['object_a'].astype(str).str.lower())
+    object_b_words = set(data['object_b'].astype(str).str.lower())
+    excluded_words = stop_words.union(object_a_words).union(object_b_words)
+    
+    all_words = []
+    for sentence in sentences:
+        words = sentence.split()
+        for word in words:
+            word = word.lower()
+            if word not in excluded_words:
+                all_words.append(word)
+    
+    word_counts = Counter(all_words)
+    print(f"Total unique words (excluding stop words and objects): {len(word_counts)}")
+    
+    word_freq_df = pd.DataFrame(word_counts.items(), columns=['Word', 'Frequency'])
+    word_freq_df = word_freq_df.sort_values(by='Frequency', ascending=False)
+    print(word_freq_df.head(n).to_string(index=False))
 
 def getValidNumber(wordCount):
     while True:
@@ -239,13 +278,17 @@ def main():
     
     while userChoice > 0:
         if userChoice == 1:
-                getTotalFreqWords(data)
+            getTotalFreqWords(data)
         elif userChoice == 2:
             getMostFreqWordsA_B(data)
         elif userChoice == 3:
             getSentimentOfA(data)
         elif userChoice == 4:
             getSentimentOfB(data)
+        elif userChoice == 5:
+            searchDomain(data)
+        elif userChoice == 6:
+            getUniqueWordsExcludingStopWordsAndObjects(data)
         
         userChoice  = getUserInput()
         
