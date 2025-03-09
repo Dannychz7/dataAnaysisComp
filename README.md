@@ -1,6 +1,9 @@
-Name: Daniel Chavez
+# Comparative Sentence Analyzer
+This Python script analyzes comparative sentences from a CSV file, as studied in the research paper "Comparing Comparative Sentences" by Daniel Chavez. It uses pandas to load data and NLTK for text cleaning, sentiment analysis, and keyword extraction, providing insights into sentiment trends and distinctive words across domains.
 
-DISCLAIMER: I did create or own the dataComparative.csv file. I got the sample data from: https://github.com/uhh-lt/comparative. They are the rightful owners of the data.
+
+TODO List:
+[] N-Grams
 
 # Basic Git Setup
 git config --global user.name "Your Name"
@@ -77,8 +80,4 @@ Example:
     3. git push origin main #This should upload to the github repo successfully
 
 
-
-TODO List:
-[] Refine the splicing method
-[] Create a universal data structure like a dict, or list of all the words, or columns
-[] Add sentiment feeling for 5 and 6 
+DISCLAIMER: I did create or own the dataComparative.csv file. I got the sample data from: https://github.com/uhh-lt/comparative. They are the rightful owners of the data.
